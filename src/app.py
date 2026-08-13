@@ -74,7 +74,7 @@ def main() -> None:
     # Set Streamlit Page Config
     st.set_page_config(
         page_title="IIMS TES System",
-        page_icon="📊",
+        page_icon=".streamlit/favicon.png",
         layout="wide",
     )
 
