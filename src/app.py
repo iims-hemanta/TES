@@ -123,6 +123,9 @@ def _render_single_mode(
 ) -> None:
     """Render the single-faculty scorecard generation UI."""
     selected_faculty_raw = st.sidebar.selectbox("Choose Faculty Member:", unique_faculty)
+    if selected_faculty_raw is None:
+        st.warning("No faculty member selected. Please check your data.")
+        st.stop()
     faculty_name_clean = _clean_faculty_name(selected_faculty_raw)
 
     st.subheader("Step 3: Staff & Metadata")
@@ -152,7 +155,7 @@ def _render_single_mode(
     for c in rating_cols:
         fac_df[c] = fac_df[c].map(SCALE_MAP)
 
-    means = fac_df[rating_cols].mean()
+    means: pd.Series = pd.Series(fac_df[rating_cols].mean(axis=0))
     d_scores = _compute_dimension_scores(means)
     student_score_70 = _compute_student_score(d_scores)
 
@@ -233,7 +236,7 @@ def _render_batch_mode(df: pd.DataFrame, faculty_col: str, unique_faculty: list)
                 for c in rating_cols:
                     fac_df[c] = fac_df[c].map(SCALE_MAP)
 
-                means = fac_df[rating_cols].mean()
+                means: pd.Series = pd.Series(fac_df[rating_cols].mean(axis=0))
                 d_scores = _compute_dimension_scores(means)
                 student_score_70 = _compute_student_score(d_scores)
 
