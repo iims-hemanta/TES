@@ -4,8 +4,16 @@ from __future__ import annotations
 
 import io
 import os
+import sys
 import zipfile
+from pathlib import Path
 from typing import Dict
+
+# Ensure the repo root is on sys.path so `src` package is importable
+# (needed when running on Streamlit Cloud where only src/ is on the path)
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 import numpy as np
 import pandas as pd
